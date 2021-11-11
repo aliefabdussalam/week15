@@ -1,7 +1,15 @@
+import { Link,useHistory } from "react-router-dom";
 import Footer from "../components/footer";
 import "../css/login.css";
 
 const Login = () => {
+    const history = useHistory()
+    const submitLogin = (e) => {
+        e.preventDefault();
+            localStorage.setItem("token", "123")
+            localStorage.setItem('isLogin', "true")
+            history.push('/')
+      }
     return(
         <div>
         
@@ -34,10 +42,10 @@ const Login = () => {
                 </div>
             </div>
             <div class="d-grid gap-2 col-11 mx-auto">
-                <button class="btn btn-secondary" type="button">Login</button>
+            <button class="btn btn-secondary col-12" type="button" onClick={submitLogin}>Login</button>
                 <button class="btn google btn-secondary" type="button">Login with Google</button>
                 <a class="dont">Don’t have an account?</a>
-                <button class="btn signbtn btn-secondary" type="button">Sign up here</button>
+                <Link to='/signup'><button class="btn signbtn btn-secondary col-12" type="button">Sign up here</button></Link>
               </div>
                     </section>
                 </div>

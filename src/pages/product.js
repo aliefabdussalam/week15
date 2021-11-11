@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from "react";
-import { useHistory} from "react-router-dom";
+import { useHistory, useLocation} from "react-router-dom";
 import NavbarItem from "../components/navbar";
 import CardPrd from '../components/CardPrd'
 import Footer from "../components/footer";
@@ -209,12 +209,73 @@ const Products = () => {
       delivery_days: "Monday to Friday",
       delivery_time: "1 - 3PM",
     },
+    {
+      id: "p1",
+      name: "Veggie tomato mix",
+      image:
+        "https://github.com/aliefabdussalam/week5/blob/main/productpage/img/image%202.png?raw=true",
+      size: ["R","L", "XL"],
+      price: 34000,
+      stock: 20,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus explicabo eos dolorum tempora quisquam, expedita aliquam inventore labore consectetur incidunt consequuntur deleniti a facilis voluptatibus assumenda reprehenderit iste perspiciatis! Enim perferendis magnam modi labore, ducimus sapiente officia dicta eos sunt!",
+      discount: 10,
+      category: "foods",
+      delivery_days: "Monday to Friday",
+      delivery_time: "1 - 3PM",
+    },
+    {
+      id: "p2",
+      name: "Hazelnut Latte",
+      image:
+        "https://github.com/aliefabdussalam/week5/blob/main/productpage/img/image%2022.png?raw=true",
+      size: ["R","L", "XL"],
+      price: 25000,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, incidunt? Quidem ex eius cum, commodi inventore ab magnam! Hic veritatis velit, quisquam odit, recusandae perferendis eum, tempora omnis quidem repudiandae maxime reiciendis voluptatibus enim nihil mollitia unde pariatur in voluptatum?",
+      stock: 23,
+      discount: 0,
+      category: "Non Coffee",
+      delivery_days: "Monday to Friday",
+      delivery_time: "1 - 3PM",
+    },
+    {
+      id: "p3",
+      name: "Summer fried rice",
+      image:
+        "https://github.com/aliefabdussalam/week5/blob/main/productpage/img/image%202%20(1).png?raw=true",
+      size: ["R","L", "XL"],
+      price: 32000,
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, incidunt? Quidem ex eius cum, commodi inventore ab magnam! Hic veritatis velit, quisquam odit, recusandae perferendis eum, tempora omnis quidem repudiandae maxime reiciendis voluptatibus enim nihil mollitia unde pariatur in voluptatum?",
+      stock: 12,
+      discount: 13,
+      category: "Foods",
+      delivery_days: "Monday to Friday",
+      delivery_time: "1 - 3PM",
+    },
+    {
+      id: "p4",
+      name: "Cold Brew",
+      image:"https://github.com/aliefabdussalam/week5/blob/main/productpage/img/image%2022%20(1).png?raw=true",
+      size: ["R","L", "XL"],
+      price: 30000,
+      description: "Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.",
+      stock: 23,
+      discount: 0,
+      category: "Coffee",
+      delivery_days: "Monday to Friday",
+      delivery_time: "1 - 3PM",
+    },
+
 
   ]
-
+  const [search,setSearch] = useState('')
   const [products, setProducts] = useState(data);
-
-  const history = useHistory()
+  const history = useHistory();
+  const location = useLocation();
+  const query  = new URLSearchParams(location.search)
+  localStorage.setItem('data',JSON.stringify(data))
+  const getproduct = localStorage.getItem('data')
+  const resultSearch = query.get('search')
+  const productslocal = JSON.parse(getproduct)
  
   useEffect(()=> {
    
@@ -242,13 +303,34 @@ const Products = () => {
       }
     })
   }
-
-  
+  const changeSearch = (e) =>{
+    setSearch(e.target.value)
+}
+const handleSubmit = (e) =>{
+    e.preventDefault();
+    history.push(`product?search=${search}`)
+}
+useEffect(()=>{
+  if (resultSearch && resultSearch !==''){
+      // eslint-disable-next-line array-callback-return
+      const searchProduct = productslocal.filter((e)=>{
+          if (e.name.toLowerCase().includes(resultSearch)){
+              return e
+          }
+      })
+      setProducts(searchProduct)
+      console.log(searchProduct)
+      console.log(productslocal)
+  }else{
+      setProducts(data)
+  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+},[resultSearch])  
   
   return (
     <div>
       <div className="navbarProducts border-bottom">
-        <NavbarItem />
+      <NavbarItem isLogin='true'/>
       </div>
       <section className="container-fluid promo">
         <div className="row">
@@ -262,7 +344,7 @@ const Products = () => {
               </div>
               <div className="row d-md-flex flex-md-column d-flex flex-column justify-content-lg-center align-items-lg-center col-lg-10 pt-5 testiCard">                
                 {promo.map((e, i) => (
-                  <div key={i} id={e.id} className="card mb-3 mx-md-2 mx-2 rounded">
+                  <div key={i} id={e.id} className="card mb-3 mx-md-2 mx-2 " style={{borderRadius:"25px"}}>
                     <div className="row g-0">
                       <div className="col-md-4 col-4">
                         <img
@@ -306,7 +388,10 @@ const Products = () => {
 
           <div className="col-lg-7 col-md-12 product">
             
-
+          <form onSubmit={handleSubmit} className='d-flex justify-content-center'>
+                        <input type="text" onChange={changeSearch} value={search} name="search" placeholder="Cari Product" className='form-control w-75 me-2 mt-3'/>
+                        <button type="submit" className='btn btn-success'>Search</button>
+                    </form>
             <div className="container-fluid mt-lg-5 mt-md-5 ms-lg-5 ms-md-0 menuProduct">
               <div className="row itemProduct">
               <DataContext.Provider value={products}>

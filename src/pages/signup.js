@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Footer from "../components/footer";
 
 const Signup = () => {
@@ -34,10 +35,11 @@ const Signup = () => {
               </div>
             </div>
             <div class="d-grid gap-2 col-11 mx-auto">
-                <button class="btn btn-secondary" type="button">Sign up</button>
+                <Link to ='/login'><button class="btn btn-secondary col-12" type="button">Sign up</button></Link>
                 <button class="btn google btn-secondary" type="button">Sign up with Google</button>
                 <a class="dont">Already have an account?</a>
-                <button class="btn signbtn btn-secondary" type="button">Login here</button>
+                <Link to='/login'><button class="btn signbtn btn-secondary col-12" type="button">Login here</button></Link>
+                
               </div>
                     </section>
                 </div>

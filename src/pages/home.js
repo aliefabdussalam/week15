@@ -1,19 +1,22 @@
 import NavbarItem from "../components/navbar"
 import Footer from "../components/footer"
 import "../css/home.css";
+import { Link } from "react-router-dom";
 
 const Home = () => {
+    const loginStatus = localStorage.getItem('isLogin')
+    console.log(loginStatus)
     return(
         <div>
            
-                <NavbarItem />
+                <NavbarItem isLogin= {loginStatus}/>
         
             <main>
             <div class="maincontent container-fluid p-0 m-0">
             <div class="jumbotron">
               <h1>Start Your Day with Coffee and Good Meals</h1>      
               <p>We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!</p>
-              <a href="../productpage/productpage.html"><button>Get Started</button></a>
+              <Link to="/product"><button>Get Started</button></Link>
             </div> 
             </div>
             
